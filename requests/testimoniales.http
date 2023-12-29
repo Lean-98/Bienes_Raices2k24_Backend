@@ -1,0 +1,27 @@
+### Recuperar todos los testimoniales
+GET http://localhost:3000/api/testimoniales
+
+### Recuperar un testimonial por id
+GET http://localhost:3000/api/testimoniales/561c67f7-a64e-11ee-939e-4ccc6afcbba7
+
+### Crear una testimonial con POST
+POST http://localhost:3000/api/testimoniales
+Content-Type: application/json
+
+{
+    "author": "Marco Rossetti",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus."
+}
+
+### Borrar testimonial
+DELETE http://localhost:3000/api/testimoniales/80978513-a652-11ee-939e-4ccc6afcbba7
+
+
+### Actualizar testimonial  
+PATCH  http://localhost:3000/api/testimoniales/80978513-a652-11ee-939e-4ccc6afcbba7
+Content-Type: application/json
+
+{
+    "author": "Alexis Bazan",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus."
+}
