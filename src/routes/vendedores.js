@@ -1,5 +1,11 @@
-import { Router } from "express";
-import { crearVendedor, eliminarVendedor, getVendedorId, getVendedores, actualizarVendedor } from "../controllers/vendedores.controller.js";
+import { Router } from 'express'
+import {
+  crearVendedor,
+  eliminarVendedor,
+  getVendedorId,
+  getVendedores,
+  actualizarVendedor,
+} from '../controllers/vendedores.controller.js'
 
 const router = Router()
 

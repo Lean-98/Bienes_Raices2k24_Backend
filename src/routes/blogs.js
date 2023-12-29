@@ -1,12 +1,12 @@
-import { Router } from "express"
-import { actualizarBlog, crearBlog, deleteBlog, getBlogId, getBlogs, } from "../controllers/blogs.controller.js";
+import { Router } from 'express'
+import { BlogController } from '../controllers/blogs.js'
 
 const blogsRouter = Router()
 
-blogsRouter.get('/', getBlogs)
-blogsRouter.get('/:id', getBlogId)
-blogsRouter.post('/', crearBlog)
-blogsRouter.patch('/:id', actualizarBlog)
-blogsRouter.delete('/:id', deleteBlog)
+blogsRouter.get('/', BlogController.getAll)
+blogsRouter.get('/:id', BlogController.getById)
+blogsRouter.post('/', BlogController.create)
+blogsRouter.patch('/:id', BlogController.update)
+blogsRouter.delete('/:id', BlogController.delete)
 
 export default blogsRouter

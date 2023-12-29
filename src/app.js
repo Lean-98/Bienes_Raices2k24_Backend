@@ -14,15 +14,15 @@ app.disable('x-powered-by')
 
 app.use('/api/testing', indexRoutes)
 app.use('/api/blogs', blogsRoutes)
-app.use('/api', adminRoutes) //TODO
+app.use('/api', adminRoutes) // TODO
 app.use('/api/propiedades', propiedadesRoutes)
 app.use('/api/testimoniales', testimonialesRoutes)
 app.use('/api/vendedores', vendedoresRoutes)
 
 app.use((req, res, next) => {
-    res.status(404).json({
-        message: 'endpoint not found'
-    })
+  res.status(404).json({
+    message: 'endpoint not found',
+  })
 })
 
 export default app

@@ -2,32 +2,32 @@
 GET http://localhost:3000/api/blogs
 
 ### Recuperar un blog por id
-GET http://localhost:3000/api/blogs/5
+GET http://localhost:3000/api/blogs/ee574737-a664-11ee-939e-4ccc6afcbba7
 
 ### Crear una blog con POST
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
 
 {
-    "titulo": "Testing 01",
-    "fecha": "2023/12/26",
-    "escritor": "Admin",
-    "contenido": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
-    "imagen": "img.jpg" 
+    "title": "Testing 144",
+    "created": "2023/12/29",
+    "author": "Admin",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
+    "image": "img.jpg" 
 }
 
 ### Borrar blog
-DELETE http://localhost:3000/api/blogs/17
+DELETE http://localhost:3000/api/blogs/69fdf15c-a68c-11ee-9d6e-4ccc6afcbba7
 
 
 ### Actualizar blog  
-PATCH  http://localhost:3000/api/blogs/18
+PATCH  http://localhost:3000/api/blogs/69fdf15c-a68c-11ee-9d6e-4ccc6afcbba7
 Content-Type: application/json
 
 {
-    "titulo": "Testing update01",
-    "fecha": "2023/12/26",
-    "escritor": "AdminPro",
-    "contenido": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
-    "imagen": "img.png" 
+    "title": "Testing update01",
+    "created": "2023/12/29",
+    "author": "AdminPro",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
+    "image": "img.png" 
 }

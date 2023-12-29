@@ -1,11 +1,10 @@
-import { TestimonialModel } from '../models/testimonial.js'
+import { BlogModel } from '../models/blogs.js'
 import { validatorUUID } from '../utils/validatoruuid.js'
-// import { validateTestimonial } from '../schemas/testimoniales.js'
 
-export class TestimonialController {
+export class BlogController {
   static async getAll(req, res) {
-    const testimonials = await TestimonialModel.getAll()
-    res.json(testimonials)
+    const blogs = await BlogModel.getAll()
+    res.json(blogs)
   }
 
   static async getById(req, res) {
@@ -15,20 +14,20 @@ export class TestimonialController {
         message: 'Invalid ID format',
       })
     }
-    const testimonial = await TestimonialModel.getById({ id })
+    const blog = await BlogModel.getById({ id })
 
-    if (!testimonial)
+    if (!blog)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Blog not found',
       })
-    res.send(testimonial)
+    res.send(blog)
   }
 
   static async create(req, res) {
     const input = req.body
     try {
-      const newTestimonial = await TestimonialModel.create({ input })
-      res.status(201).json(newTestimonial)
+      const newBlog = await BlogModel.create({ input })
+      res.status(201).json(newBlog)
     } catch (error) {
       return res.status(500).json({
         message: 'Something goes wrong',
@@ -46,17 +45,14 @@ export class TestimonialController {
       })
     }
 
-    const { updatedTestimonial, result } = await TestimonialModel.update({
-      id,
-      input,
-    })
+    const { result, rows } = await BlogModel.update({ id, input })
 
     if (result.affectedRows === 0)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Blog not found',
       })
 
-    res.json(updatedTestimonial)
+    res.json(rows[0])
   }
 
   static async delete(req, res) {
@@ -67,13 +63,11 @@ export class TestimonialController {
       })
     }
 
-    const { result } = await TestimonialModel.delete({ id })
-
-    if (result.affectedRows === 0)
+    const { result } = await BlogModel.delete({ id })
+    if (result.affectedRows <= 0)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Blog not found',
       })
-
     res.sendStatus(204)
   }
 }

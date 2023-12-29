@@ -1,5 +1,11 @@
-import { Router } from "express";
-import { getPropiedades, getPropiedadId, crearPropiedad, actualizarPropiedad, eliminarPropiedad } from "../controllers/propiedades.controller.js";
+import { Router } from 'express'
+import {
+  getPropiedades,
+  getPropiedadId,
+  crearPropiedad,
+  actualizarPropiedad,
+  eliminarPropiedad,
+} from '../controllers/propiedades.controller.js'
 
 const router = Router()
 
