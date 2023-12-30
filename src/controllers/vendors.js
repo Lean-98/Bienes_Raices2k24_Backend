@@ -1,12 +1,11 @@
-import { TestimonialModel } from '../models/testimonial.js'
+import { VendorsModel } from '../models/vendors.js'
 import { validatorUUID } from '../utils/validatoruuid.js'
-// import { validateTestimonial } from '../schemas/testimoniales.js'
 
-export class TestimonialController {
+export class VendorController {
   static async getAll(req, res) {
     try {
-      const testimonials = await TestimonialModel.getAll()
-      res.json(testimonials)
+      const vendors = await VendorsModel.getAll()
+      res.json(vendors)
     } catch (error) {
       res.status(500).json({
         message: 'Something goes wrong',
@@ -21,22 +20,24 @@ export class TestimonialController {
         message: 'Invalid ID format',
       })
     }
-    const testimonial = await TestimonialModel.getById({ id })
 
-    if (!testimonial)
+    const vendor = await VendorsModel.getById({ id })
+
+    if (!vendor)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Vendedor not found',
       })
-    res.send(testimonial)
+
+    res.send(vendor)
   }
 
   static async create(req, res) {
     const input = req.body
     try {
-      const newTestimonial = await TestimonialModel.create({ input })
-      res.status(201).json(newTestimonial)
+      const newVendor = await VendorsModel.create({ input })
+      res.status(201).json(newVendor)
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'Something goes wrong',
       })
     }
@@ -52,34 +53,31 @@ export class TestimonialController {
       })
     }
 
-    const { updatedTestimonial, result } = await TestimonialModel.update({
-      id,
-      input,
-    })
+    const { updatedVendor, result } = await VendorsModel.update({ id, input })
 
     if (result.affectedRows === 0)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Vendedor not found',
       })
 
-    res.json(updatedTestimonial)
+    res.json(updatedVendor)
   }
 
   static async delete(req, res) {
     const { id } = req.params
+
     if (!validatorUUID(id)) {
       return res.status(400).json({
         message: 'Invalid ID format',
       })
     }
 
-    const { result } = await TestimonialModel.delete({ id })
+    const result = await VendorsModel.delete({ id })
 
     if (result.affectedRows === 0)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Vendedor not found',
       })
-
     res.sendStatus(204)
   }
 }

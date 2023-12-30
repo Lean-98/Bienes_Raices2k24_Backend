@@ -1,11 +1,11 @@
 ### Recuperar todos los testimoniales
-GET http://localhost:3000/api/testimoniales
+GET http://localhost:3000/api/testimonials
 
 ### Recuperar un testimonial por id
-GET http://localhost:3000/api/testimoniales/561c67f7-a64e-11ee-939e-4ccc6afcbba7
+GET http://localhost:3000/api/testimonials/561c67f7-a64e-11ee-939e-4ccc6afcbba7
 
 ### Crear una testimonial con POST
-POST http://localhost:3000/api/testimoniales
+POST http://localhost:3000/api/testimonials
 Content-Type: application/json
 
 {
@@ -14,11 +14,11 @@ Content-Type: application/json
 }
 
 ### Borrar testimonial
-DELETE http://localhost:3000/api/testimoniales/80978513-a652-11ee-939e-4ccc6afcbba7
+DELETE http://localhost:3000/api/testimonials/1297e6a3-a660-11ee-939e-4ccc6afcbba7
 
 
 ### Actualizar testimonial  
-PATCH  http://localhost:3000/api/testimoniales/80978513-a652-11ee-939e-4ccc6afcbba7
+PATCH  http://localhost:3000/api/testimonials/1297e6a3-a660-11ee-939e-4ccc6afcbba7
 Content-Type: application/json
 
 {

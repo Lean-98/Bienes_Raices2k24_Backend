@@ -3,8 +3,14 @@ import { validatorUUID } from '../utils/validatoruuid.js'
 
 export class BlogController {
   static async getAll(req, res) {
-    const blogs = await BlogModel.getAll()
-    res.json(blogs)
+    try {
+      const blogs = await BlogModel.getAll()
+      res.json(blogs)
+    } catch (error) {
+      res.status(500).json({
+        message: 'Something goes wrong',
+      })
+    }
   }
 
   static async getById(req, res) {

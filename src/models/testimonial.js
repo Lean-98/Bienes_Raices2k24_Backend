@@ -18,7 +18,6 @@ export class TestimonialModel {
         'SELECT BIN_TO_UUID(id) id, author, content FROM testimonials WHERE id = UUID_TO_BIN(?)',
         [id],
       )
-      console.log(rows[0])
       return rows[0]
     } catch (error) {
       throw new Error('Error when obtaining id')
