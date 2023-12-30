@@ -1,10 +1,10 @@
-import { VendorsModel } from '../models/vendors.js'
-import { validatorUUID } from '../utils/validatoruuid.js'
+import { VendorModel } from '../models/vendor.js'
+import { validate } from 'uuid'
 
 export class VendorController {
   static async getAll(req, res) {
     try {
-      const vendors = await VendorsModel.getAll()
+      const vendors = await VendorModel.getAll()
       res.json(vendors)
     } catch (error) {
       res.status(500).json({
@@ -15,17 +15,17 @@ export class VendorController {
 
   static async getById(req, res) {
     const { id } = req.params
-    if (!validatorUUID(id)) {
+    if (!validate(id)) {
       return res.status(400).json({
         message: 'Invalid ID format',
       })
     }
 
-    const vendor = await VendorsModel.getById({ id })
+    const vendor = await VendorModel.getById({ id })
 
     if (!vendor)
       return res.status(404).json({
-        message: 'Vendedor not found',
+        message: 'Vendor not found',
       })
 
     res.send(vendor)
@@ -34,7 +34,7 @@ export class VendorController {
   static async create(req, res) {
     const input = req.body
     try {
-      const newVendor = await VendorsModel.create({ input })
+      const newVendor = await VendorModel.create({ input })
       res.status(201).json(newVendor)
     } catch (error) {
       res.status(500).json({
@@ -47,17 +47,17 @@ export class VendorController {
     const { id } = req.params
     const input = req.body
 
-    if (!validatorUUID(id)) {
+    if (!validate(id)) {
       return res.status(400).json({
         message: 'Invalid ID format',
       })
     }
 
-    const { updatedVendor, result } = await VendorsModel.update({ id, input })
+    const { updatedVendor, result } = await VendorModel.update({ id, input })
 
     if (result.affectedRows === 0)
       return res.status(404).json({
-        message: 'Vendedor not found',
+        message: 'Vendor not found',
       })
 
     res.json(updatedVendor)
@@ -66,17 +66,17 @@ export class VendorController {
   static async delete(req, res) {
     const { id } = req.params
 
-    if (!validatorUUID(id)) {
+    if (!validate(id)) {
       return res.status(400).json({
         message: 'Invalid ID format',
       })
     }
 
-    const result = await VendorsModel.delete({ id })
+    const { result } = await VendorModel.delete({ id })
 
     if (result.affectedRows === 0)
       return res.status(404).json({
-        message: 'Vendedor not found',
+        message: 'Vendor not found',
       })
     res.sendStatus(204)
   }

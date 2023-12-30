@@ -1,5 +1,5 @@
-import { BlogModel } from '../models/blogs.js'
-import { validatorUUID } from '../utils/validatoruuid.js'
+import { BlogModel } from '../models/blog.js'
+import { validate } from 'uuid'
 
 export class BlogController {
   static async getAll(req, res) {
@@ -15,7 +15,7 @@ export class BlogController {
 
   static async getById(req, res) {
     const { id } = req.params
-    if (!validatorUUID(id)) {
+    if (!validate(id)) {
       return res.status(400).json({
         message: 'Invalid ID format',
       })
@@ -45,7 +45,7 @@ export class BlogController {
     const { id } = req.params
     const input = req.body
 
-    if (!validatorUUID(id)) {
+    if (!validate(id)) {
       return res.status(400).json({
         message: 'Invalid ID format',
       })
@@ -63,13 +63,14 @@ export class BlogController {
 
   static async delete(req, res) {
     const { id } = req.params
-    if (!validatorUUID(id)) {
+    if (!validate(id)) {
       return res.status(400).json({
         message: 'Invalid ID format',
       })
     }
 
     const { result } = await BlogModel.delete({ id })
+    
     if (result.affectedRows <= 0)
       return res.status(404).json({
         message: 'Blog not found',

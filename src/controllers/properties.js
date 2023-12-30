@@ -1,14 +1,13 @@
-import { TestimonialModel } from '../models/testimonial.js'
+import { PropertyModel } from '../models/property.js'
 import { validate } from 'uuid'
-// import { validateTestimonial } from '../schemas/testimoniales.js'
 
-export class TestimonialController {
+export class PropertyController {
   static async getAll(req, res) {
     try {
-      const testimonials = await TestimonialModel.getAll()
-      res.json(testimonials)
+      const properties = await PropertyModel.getAll()
+      res.json(properties)
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: 'Something goes wrong',
       })
     }
@@ -21,25 +20,20 @@ export class TestimonialController {
         message: 'Invalid ID format',
       })
     }
-    const testimonial = await TestimonialModel.getById({ id })
-
-    if (!testimonial)
+    const property = await PropertyModel.getById({ id })
+    if (!property)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Property not found',
       })
-    res.send(testimonial)
+    res.send(property)
   }
 
   static async create(req, res) {
     const input = req.body
-    try {
-      const newTestimonial = await TestimonialModel.create({ input })
-      res.status(201).json(newTestimonial)
-    } catch (error) {
-      return res.status(500).json({
-        message: 'Something goes wrong',
-      })
-    }
+
+    const newProperty = await PropertyModel.create({ input })
+
+    res.status(201).json(newProperty)
   }
 
   static async update(req, res) {
@@ -52,17 +46,17 @@ export class TestimonialController {
       })
     }
 
-    const { updatedTestimonial, result } = await TestimonialModel.update({
+    const { result, updatedProperty } = await PropertyModel.update({
       id,
       input,
     })
 
     if (result.affectedRows === 0)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Property not found',
       })
 
-    res.json(updatedTestimonial)
+    res.json(updatedProperty[0])
   }
 
   static async delete(req, res) {
@@ -73,13 +67,13 @@ export class TestimonialController {
       })
     }
 
-    const { result } = await TestimonialModel.delete({ id })
-
-    if (result.affectedRows === 0)
+    const { result } = await PropertyModel.delete({ id })
+    // console.log(result.affectedRows)
+    
+    if (result.affectedRows <= 0)
       return res.status(404).json({
-        message: 'Testimonial not found',
+        message: 'Property not found',
       })
-
     res.sendStatus(204)
   }
 }

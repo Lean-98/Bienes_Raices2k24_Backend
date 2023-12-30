@@ -1,6 +1,6 @@
 import { pool } from '../db.js'
 
-export class VendorsModel {
+export class VendorModel {
   static async getAll() {
     try {
       const [rows] = await pool.query(
@@ -73,7 +73,7 @@ export class VendorsModel {
         'DELETE FROM vendors WHERE id = UUID_TO_BIN(?)',
         [id],
       )
-      return result
+      return { result }
     } catch (error) {
       throw new Error('Error deleting vendor')
     }
