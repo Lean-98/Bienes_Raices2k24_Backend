@@ -69,7 +69,7 @@ export class PropertyController {
 
     const { result } = await PropertyModel.delete({ id })
     // console.log(result.affectedRows)
-    
+
     if (result.affectedRows <= 0)
       return res.status(404).json({
         message: 'Property not found',

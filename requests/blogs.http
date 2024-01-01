@@ -17,11 +17,11 @@ Content-Type: application/json
 }
 
 ### Borrar blog
-DELETE http://localhost:3000/api/blogs/69fdf15c-a68c-11ee-9d6e-4ccc6afcbba7
+DELETE http://localhost:3000/api/blogs/3674f354-a7cf-11ee-8069-4ccc6afcbba7
 
 
 ### Actualizar blog  
-PATCH  http://localhost:3000/api/blogs/69fdf15c-a68c-11ee-9d6e-4ccc6afcbba7
+PATCH  http://localhost:3000/api/blogs/3674f354-a7cf-11ee-8069-4ccc6afcbba7
 Content-Type: application/json
 
 {

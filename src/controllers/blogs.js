@@ -70,7 +70,7 @@ export class BlogController {
     }
 
     const { result } = await BlogModel.delete({ id })
-    
+
     if (result.affectedRows <= 0)
       return res.status(404).json({
         message: 'Blog not found',

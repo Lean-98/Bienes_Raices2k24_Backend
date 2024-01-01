@@ -5,5 +5,17 @@ Content-Type: application/json
 
 {
     "email": "admin@admin.us",
-    "password": "420"
+    "password": "boss"
+}
+
+
+### Crear user admin con POST
+POST http://localhost:3000/api/
+Content-Type: application/json
+
+{
+    "id": 777,
+   "email": "admin@admin.us",
+    "pword": "password",
+    "role": "admin"
 }

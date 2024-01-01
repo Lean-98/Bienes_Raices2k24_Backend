@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { loginAdmin } from '../controllers/auth.controller.js'
+import { AuthController } from '../controllers/auth.js'
 
-const router = Router()
+const authRouter = Router()
 
-router.post('/login', loginAdmin)
+authRouter.post('/login', AuthController.loginAdmin)
+authRouter.post('/', AuthController.create)
 
-export default router
+export default authRouter

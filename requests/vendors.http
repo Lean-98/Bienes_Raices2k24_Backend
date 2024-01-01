@@ -17,11 +17,11 @@ Content-Type: application/json
 }
 
 ### Borrar vendedor
-DELETE http://localhost:3000/api/vendors/df35dc6d-a6a1-11ee-9d6e-4ccc6afcbba7
+DELETE http://localhost:3000/api/vendors/c3262c88-a7ce-11ee-8069-4ccc6afcbba7
 
 
 ### Actualizar vendedor  
-PATCH  http://localhost:3000/api/vendors/0e836914-a6a2-11ee-9d6e-4ccc6afcbba7
+PATCH  http://localhost:3000/api/vendors/c3262c88-a7ce-11ee-8069-4ccc6afcbba7
 Content-Type: application/json
 
 {

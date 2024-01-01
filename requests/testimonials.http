@@ -14,11 +14,11 @@ Content-Type: application/json
 }
 
 ### Borrar testimonial
-DELETE http://localhost:3000/api/testimonials/1297e6a3-a660-11ee-939e-4ccc6afcbba7
+DELETE http://localhost:3000/api/testimonials/e8a901f7-a7ce-11ee-8069-4ccc6afcbba7
 
 
 ### Actualizar testimonial  
-PATCH  http://localhost:3000/api/testimonials/1297e6a3-a660-11ee-939e-4ccc6afcbba7
+PATCH  http://localhost:3000/api/testimonials/e8a901f7-a7ce-11ee-8069-4ccc6afcbba7
 Content-Type: application/json
 
 {

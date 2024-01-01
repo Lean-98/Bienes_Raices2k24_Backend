@@ -21,10 +21,10 @@ Content-Type: application/json
   }
 
 ### Borrar propiedad
-DELETE http://localhost:3000/api/properties/e0ccefcd-a6c4-11ee-9d6e-4ccc6afcbba7
+DELETE http://localhost:3000/api/properties/0d2f147f-a7cf-11ee-8069-4ccc6afcbba7
 
 ### Actualizar propiedad  
-PATCH http://localhost:3000/api/properties/eb484dd2-a6c3-11ee-9d6e-4ccc6afcbba7
+PATCH http://localhost:3000/api/properties/0d2f147f-a7cf-11ee-8069-4ccc6afcbba7
 Content-Type: application/json
 
 {
