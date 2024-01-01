@@ -1,5 +1,6 @@
 import { VendorModel } from '../models/vendor.js'
 import { validate } from 'uuid'
+import { validatevendor } from '../schemas/vendors.js'
 
 export class VendorController {
   static async getAll(req, res) {
@@ -32,7 +33,7 @@ export class VendorController {
   }
 
   static async create(req, res) {
-    const input = req.body
+    const input = validatevendor(req.body)
     try {
       const newVendor = await VendorModel.create({ input })
       res.status(201).json(newVendor)
@@ -45,7 +46,7 @@ export class VendorController {
 
   static async update(req, res) {
     const { id } = req.params
-    const input = req.body
+    const input = validatevendor(req.body)
 
     if (!validate(id)) {
       return res.status(400).json({

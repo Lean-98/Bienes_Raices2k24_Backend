@@ -1,5 +1,6 @@
 import { BlogModel } from '../models/blog.js'
 import { validate } from 'uuid'
+import { validateblog } from '../schemas/blogs.js'
 
 export class BlogController {
   static async getAll(req, res) {
@@ -30,7 +31,7 @@ export class BlogController {
   }
 
   static async create(req, res) {
-    const input = req.body
+    const input = validateblog(req.body)
     try {
       const newBlog = await BlogModel.create({ input })
       res.status(201).json(newBlog)
@@ -43,7 +44,7 @@ export class BlogController {
 
   static async update(req, res) {
     const { id } = req.params
-    const input = req.body
+    const input = validateblog(req.body)
 
     if (!validate(id)) {
       return res.status(400).json({

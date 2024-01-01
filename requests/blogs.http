@@ -10,23 +10,23 @@ Content-Type: application/json
 
 {
     "title": "Testing 144",
-    "created": "2023/12/29",
+    "created": "2024/01/01",
     "author": "Admin",
     "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
     "image": "img.jpg" 
 }
 
 ### Borrar blog
-DELETE http://localhost:3000/api/blogs/3674f354-a7cf-11ee-8069-4ccc6afcbba7
+DELETE http://localhost:3000/api/blogs/a66adab5-a8e2-11ee-ab73-4ccc6afcbba7
 
 
 ### Actualizar blog  
-PATCH  http://localhost:3000/api/blogs/3674f354-a7cf-11ee-8069-4ccc6afcbba7
+PATCH  http://localhost:3000/api/blogs/70cc1aa0-a68c-11ee-9d6e-4ccc6afcbba7
 Content-Type: application/json
 
 {
     "title": "Testing update01",
-    "created": "2023/12/29",
+    "created": "2024/01/01",
     "author": "AdminPro",
     "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
     "image": "img.png" 

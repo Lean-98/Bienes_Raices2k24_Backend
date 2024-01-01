@@ -1,5 +1,6 @@
 import { PropertyModel } from '../models/property.js'
 import { validate } from 'uuid'
+import { validateproperty } from '../schemas/properties.js'
 
 export class PropertyController {
   static async getAll(req, res) {
@@ -29,7 +30,7 @@ export class PropertyController {
   }
 
   static async create(req, res) {
-    const input = req.body
+    const input = validateproperty(req.body)
 
     const newProperty = await PropertyModel.create({ input })
 
@@ -38,7 +39,7 @@ export class PropertyController {
 
   static async update(req, res) {
     const { id } = req.params
-    const input = req.body
+    const input = validateproperty(req.body)
 
     if (!validate(id)) {
       return res.status(400).json({

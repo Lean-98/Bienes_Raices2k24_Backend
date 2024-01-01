@@ -1,5 +1,6 @@
 import { TestimonialModel } from '../models/testimonial.js'
 import { validate } from 'uuid'
+import { validateTestimonial } from '../schemas/testimonials.js'
 // import { validateTestimonial } from '../schemas/testimoniales.js'
 
 export class TestimonialController {
@@ -31,7 +32,7 @@ export class TestimonialController {
   }
 
   static async create(req, res) {
-    const input = req.body
+    const input = validateTestimonial(req.body)
     try {
       const newTestimonial = await TestimonialModel.create({ input })
       res.status(201).json(newTestimonial)
@@ -44,7 +45,7 @@ export class TestimonialController {
 
   static async update(req, res) {
     const { id } = req.params
-    const input = req.body
+    const input = validateTestimonial(req.body)
 
     if (!validate(id)) {
       return res.status(400).json({

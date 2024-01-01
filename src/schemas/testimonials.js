@@ -1,14 +1,16 @@
-import z from 'zod'
+import { z } from 'zod'
 
 const testimonialSchema = z.object({
-  nombreCompleto: z.string({
-    required_error: 'Fullname is required.',
-  }),
-  contenido: {
-    type: z.string(),
-  },
+  author: z.string().max(50),
+  content: z.string(),
 })
 
-export function validateTestimonial(object) {
-  return testimonialSchema.safeParse(object)
+export function validateTestimonial(objet) {
+  const result = testimonialSchema.safeParse(objet)
+
+  if (result.success) {
+    return result.data
+  } else {
+    throw new Error(result.error)
+  }
 }
