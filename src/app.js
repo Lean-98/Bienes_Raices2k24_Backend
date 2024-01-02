@@ -21,12 +21,12 @@ app.use(
   }),
 )
 
-app.use('/api/testing', indexRoutes) // TODO: Validate run time types dates: input
-app.use('/api/blogs', blogsRoutes) // TODO: Validate run time types dates: input
-app.use('/api', adminRoutes) // TODO Validate run time types dates: input
-app.use('/api/properties', propertiesRoutes) // TODO: Validate run time types dates: input
-app.use('/api/testimonials', testimonialsRoutes) // TODO: Validate run time types dates: input
-app.use('/api/vendors', VendorsRoutes) // TODO: Validate run time types dates: input
+app.use('/api/testing', indexRoutes) 
+app.use('/api/blogs', blogsRoutes) 
+app.use('/api', adminRoutes) 
+app.use('/api/properties', propertiesRoutes) 
+app.use('/api/testimonials', testimonialsRoutes) 
+app.use('/api/vendors', VendorsRoutes) 
 
 app.use((req, res, next) => {
   res.status(404).json({
