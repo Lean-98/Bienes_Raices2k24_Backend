@@ -32,7 +32,6 @@ export class AuthModel {
         ...input,
         pword: hashedPword,
       }
-
       return newUser
     } catch (error) {
       throw new Error('Error creating user')

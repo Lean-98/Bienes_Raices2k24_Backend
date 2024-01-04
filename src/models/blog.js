@@ -1,4 +1,7 @@
 import { pool } from '../db.js'
+import fs from 'node:fs'
+import { join } from 'node:path'
+import { CURRENT_DIR } from '../multerconfig.js'
 
 export class BlogModel {
   static async getAll() {
@@ -24,8 +27,8 @@ export class BlogModel {
     }
   }
 
-  static async create({ input }) {
-    const { title, created, author, content, image } = input
+  static async create({ input, imagePath }) {
+    const { title, created, author, content } = input
     try {
       // ID creation
       const [uuidResult] = await pool.query('SELECT UUID() id')
@@ -33,12 +36,13 @@ export class BlogModel {
 
       const [rows] = await pool.query(
         `INSERT INTO blogs (id, title, created, author, content, image) VALUES (UUID_TO_BIN("${id}"),?, ?, ?, ?, ?)`,
-        [title, created, author, content, image],
+        [title, created, author, content, imagePath],
       )
 
       const newBlog = {
         id,
         ...input,
+        image: imagePath,
       }
       return newBlog
     } catch (error) {
@@ -46,12 +50,12 @@ export class BlogModel {
     }
   }
 
-  static async update({ id, input }) {
-    const { title, created, author, content, image } = input
+  static async update({ id, input, imagePath }) {
+    const { title, created, author, content } = input
     try {
       const [result] = await pool.query(
         'UPDATE blogs SET title = IFNULL(?, title), created = IFNULL(?, created), author = IFNULL(?, author), content = IFNULL(?, content), image = IFNULL(?, image) WHERE id = UUID_TO_BIN(?)',
-        [title, created, author, content, image, id],
+        [title, created, author, content, imagePath, id],
       )
 
       const [rows] = await pool.query(
@@ -67,11 +71,35 @@ export class BlogModel {
 
   static async delete({ id }) {
     try {
+      const [image] = await pool.query(
+        'SELECT image FROM blogs WHERE id = UUID_TO_BIN(?)',
+        [id],
+      )
       const [result] = await pool.query(
         'DELETE FROM blogs WHERE id = UUID_TO_BIN(?)',
         [id],
       )
-      return { result }
+
+      if (image.length > 0) {
+        const nameImageDb = image[0].image
+        const nameImage = nameImageDb.substring(
+          nameImageDb.lastIndexOf('/') + 1,
+        )
+        // console.log('Image name:', nameImage)
+        const routeImage = join(CURRENT_DIR, '../uploads', nameImage)
+
+        fs.unlink(routeImage, err => {
+          if (err) {
+            console.error('There was an error deleting the file:', err)
+          } else {
+            console.log('File deleted successfully')
+          }
+        })
+      } else {
+        console.log('The image with the specified name was not found')
+      }
+
+      return { result, image }
     } catch (error) {
       throw new Error('Error deleting blog')
     }

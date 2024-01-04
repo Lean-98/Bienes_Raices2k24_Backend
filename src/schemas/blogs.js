@@ -6,10 +6,6 @@ const blogsSchema = z.object({
   created: z.string(),
   author: z.string().max(50),
   content: z.string(),
-  image: z.string().max(200),
-  // image: z.string().max(200).url({
-  //     message: 'Image must be a valid URL'
-  // }),
 })
 
 export function validateblog(objet) {
