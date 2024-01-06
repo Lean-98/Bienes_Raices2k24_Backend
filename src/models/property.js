@@ -1,5 +1,7 @@
+import fs from 'node:fs/promises'
+import path, { join } from 'node:path'
 import { pool } from '../db.js'
-import { validate } from 'uuid'
+import { CURRENT_DIR } from '../multerconfig.js'
 
 export class PropertyModel {
   static async getAll() {
@@ -25,11 +27,22 @@ export class PropertyModel {
     }
   }
 
-  static async create({ input }) {
+  static async find({ id }) {
+    try {
+      const [rows] = await pool.query(
+        'SELECT BIN_TO_UUID(id) id FROM properties WHERE id = UUID_TO_BIN(?)',
+        [id],
+      )
+      return rows[0]
+    } catch (error) {
+      throw new Error('Error when obtaining property')
+    }
+  }
+
+  static async create({ input, imagePath }) {
     const {
       title,
       price,
-      image,
       description,
       bedrooms,
       baths,
@@ -41,40 +54,36 @@ export class PropertyModel {
     try {
       // Verificar si el vendor_id existe en la tabla vendors
       const [vendor] = await pool.query(
-        'SELECT * FROM vendors WHERE id = UUID_TO_BIN(?)',
+        'SELECT id FROM vendors WHERE id = UUID_TO_BIN(?)',
         [vendor_id],
       )
 
       if (!vendor) {
-        throw new Error('Vendor ID no existe')
-      }
-
-      // Verificar si vendor_id es un UUID válido
-      if (!validate(vendor_id)) {
-        throw new Error('vendor_id is not a valid UUID')
+        throw new Error('Vendor UUID not found')
       }
 
       // ID creation
       const [uuidResult] = await pool.query('SELECT UUID() id')
       const [{ id }] = uuidResult
       const [rows] = await pool.query(
-        `INSERT INTO properties (id, title, price, image, description, bedrooms, baths, garage, created, vendor_id) VALUES (UUID_TO_BIN("${id}"),?, ?, ?, ?, ?, ?, ?, ?, UUID_TO_BIN(?))`,
+        `INSERT INTO properties (id, title, price, description, bedrooms, baths, garage, created, vendor_id, image) VALUES (UUID_TO_BIN("${id}"),?, ?, ?, ?, ?, ?, ?, UUID_TO_BIN(?), ?)`,
         [
           title,
           price,
-          image,
           description,
           bedrooms,
           baths,
           garage,
           created,
           vendor_id,
+          imagePath,
         ],
       )
 
       const newProperty = {
         id,
         ...input,
+        image: imagePath,
       }
 
       return newProperty
@@ -83,11 +92,10 @@ export class PropertyModel {
     }
   }
 
-  static async update({ id, input }) {
+  static async update({ id, input, imagePath }) {
     const {
       title,
       price,
-      image,
       description,
       bedrooms,
       baths,
@@ -99,18 +107,35 @@ export class PropertyModel {
     // Convertir el UUID a BINARY(16)
     const vendor_id_bin = Buffer.from(vendor_id.replace(/-/g, ''), 'hex')
 
-    // Verificar si vendor_id es un UUID válido
-    if (!validate(vendor_id)) {
-      throw new Error('vendor_id is not a valid UUID')
-    }
-
     // Verificar si vendor_id existe en la BD
     const [vendor] = await pool.query(
       'SELECT id FROM vendors WHERE id = UUID_TO_BIN(?)',
       [vendor_id],
     )
+
     if (!vendor) {
       throw new Error('vendor_id does not exist in the DB')
+    }
+
+    // Obtener la imagen actual
+    const [currentImageRow] = await pool.query(
+      'SELECT image FROM properties WHERE id = UUID_TO_BIN(?)',
+      [id],
+    )
+
+    // Si la imagen actual existe, eliminarla
+    if (currentImageRow.length > 0) {
+      const currentImagePath = path.join(
+        CURRENT_DIR,
+        '../uploads',
+        path.basename(currentImageRow[0].image),
+      )
+      console.log(currentImagePath)
+      try {
+        await fs.unlink(currentImagePath)
+      } catch (error) {
+        console.error(`Failed to delete file: ${currentImagePath}`)
+      }
     }
 
     const [result] = await pool.query(
@@ -118,7 +143,7 @@ export class PropertyModel {
       [
         title,
         price,
-        image,
+        imagePath,
         description,
         bedrooms,
         baths,
@@ -139,11 +164,35 @@ export class PropertyModel {
 
   static async delete({ id }) {
     try {
+      const [image] = await pool.query(
+        'SELECT image FROM properties WHERE id = UUID_TO_BIN(?)',
+        [id],
+      )
+
       const [result] = await pool.query(
         'DELETE FROM properties WHERE id = UUID_TO_BIN(?)',
         [id],
       )
-      return { result }
+
+      if (image.length > 0) {
+        const nameImageDb = image[0].image
+        const nameImage = nameImageDb.substring(
+          nameImageDb.lastIndexOf('/') + 1,
+        )
+        // console.log('Image name:', nameImage)
+        const routeImage = join(CURRENT_DIR, '../uploads', nameImage)
+
+        fs.unlink(routeImage, err => {
+          if (err) {
+            console.error('There was an error deleting the file:', err)
+          } else {
+            console.log('File deleted successfully')
+          }
+        })
+      } else {
+        console.log('The image with the specified name was not found')
+      }
+      return { result, image }
     } catch (error) {
       throw new Error('Error deleting property')
     }

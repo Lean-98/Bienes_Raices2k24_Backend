@@ -1,6 +1,6 @@
 import express from 'express'
 import session from 'express-session'
-import indexRoutes from './routes/index.js'
+import testingRoutes from './routes/testing.js'
 import blogsRoutes from './routes/blogs.js'
 import adminRoutes from './routes/auth.js'
 import propertiesRoutes from './routes/properties.js'
@@ -24,7 +24,7 @@ app.use(
 )
 
 app.use('/public', express.static(join(CURRENT_DIR, '../uploads')))
-app.use('/api/testing', indexRoutes)
+app.use('/api/testing', testingRoutes)
 app.use('/api/blogs', blogsRoutes)
 app.use('/api', adminRoutes)
 app.use('/api/properties', propertiesRoutes)

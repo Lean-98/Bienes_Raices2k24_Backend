@@ -1,3 +1,5 @@
 export * from './cors.js'
 export * from './validateUUID.js'
-export * from './validateUuidAndEntityExistence.js'
+export * from './validateUuidAndBlogExistence.js'
+export * from './validateUuidAndVendorsExistence.js'
+export * from './validateUuidAndPropertiesExistence.js'

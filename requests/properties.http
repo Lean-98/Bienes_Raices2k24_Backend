@@ -8,33 +8,35 @@ GET http://localhost:3000/api/properties/175b0014-a6b0-11ee-9d6e-4ccc6afcbba7
 POST http://localhost:3000/api/properties
 Content-Type: application/json
   
-  {
-    "title": "Casa en Zona Centrica",
-    "price": 800000,
-    "image": "e6efbb6f8a95e9e9902ae928872487e4.jpg",
-    "description": "Casa de lujo en zona Centrica.Está distribuido en cuatro dormitorios, tres baños y salón con cocina americana. Sus materiales son de primera calidad. Se incluye una carpintería artesanal y una agradable iluminación de diferentes ambientes. El sistema de climatización es con calefacción individual de gas natural y splitz de aire frio y calor. Se entregará totalmente amueblado.",
-    "bedrooms": 3,
-    "baths": 3,
-    "garage": 2,
-    "created": "2024-01-01",
-    "vendor_id": "f8b9e3ed-a695-11ee-9d6e-4ccc6afcbba7"
-  }
+  // Usar thunder client para subir la imagen
+  # {
+  #   "title": "Casa en Zona Centrica",
+  #   "price": 800000,
+  #   "image": "e6efbb6f8a95e9e9902ae928872487e4.jpg",
+  #   "description": "Casa de lujo en zona Centrica.Está distribuido en cuatro dormitorios, tres baños y salón con cocina americana. Sus materiales son de primera calidad. Se incluye una carpintería artesanal y una agradable iluminación de diferentes ambientes. El sistema de climatización es con calefacción individual de gas natural y splitz de aire frio y calor. Se entregará totalmente amueblado.",
+  #   "bedrooms": 3,
+  #   "baths": 3,
+  #   "garage": 2,
+  #   "created": "2024-01-01",
+  #   "vendor_id": "245011f9-ac11-11ee-bc4a-4ccc6afcbba7"
+  # }
 
 ### Borrar propiedad
-DELETE http://localhost:3000/api/properties/baf7602d-a718-11ee-a4a4-4ccc6afcbba7
+DELETE http://localhost:3000/api/properties/5883221e-ac3a-11ee-bc4a-4ccc6afcbba7
 
 ### Actualizar propiedad  
 PATCH http://localhost:3000/api/properties/6e548644-a8ea-11ee-ab73-4ccc6afcbba7
 Content-Type: application/json
 
-{
-    "title": "Casa en Zona Centro",
-    "price": 900000,
-    "image": "e6efbb6f8a95e9e9902ae928872487e4.jpg",
-    "description": "Casa de lujo en zona Centrica.Está distribuido en cuatro dormitorios, tres baños y salón con cocina americana. Sus materiales son de primera calidad. Se incluye una carpintería artesanal y una agradable iluminación de diferentes ambientes. El sistema de climatización es con calefacción individual de gas natural y splitz de aire frio y calor. Se entregará totalmente amueblado.",
-    "bedrooms": 3,
-    "baths": 3,
-    "garages": 2,
-    "created": "2024-01-01",
-    "vendor_id": "f8b9e3ed-a695-11ee-9d6e-4ccc6afcbba7"
-}
+// Usar thunder client para subir la imagen
+# {
+#     "title": "Casa en Zona Centro",
+#     "price": 900000,
+#     "image": "e6efbb6f8a95e9e9902ae928872487e4.jpg",
+#     "description": "Casa de lujo en zona Centrica.Está distribuido en cuatro dormitorios, tres baños y salón con cocina americana. Sus materiales son de primera calidad. Se incluye una carpintería artesanal y una agradable iluminación de diferentes ambientes. El sistema de climatización es con calefacción individual de gas natural y splitz de aire frio y calor. Se entregará totalmente amueblado.",
+#     "bedrooms": 3,
+#     "baths": 3,
+#     "garages": 2,
+#     "created": "2024-01-01",
+#     "vendor_id": "f8b9e3ed-a695-11ee-9d6e-4ccc6afcbba7"
+# }

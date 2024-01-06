@@ -1,6 +1,7 @@
 import { VendorModel } from '../models/vendor.js'
-import { validate } from 'uuid'
 import { validatevendor } from '../schemas/vendors.js'
+import { DB_HOST, PORT } from '../config.js'
+import path from 'node:path'
 
 export class VendorController {
   static async getAll(req, res) {
@@ -16,11 +17,6 @@ export class VendorController {
 
   static async getById(req, res) {
     const { id } = req.params
-    if (!validate(id)) {
-      return res.status(400).json({
-        message: 'Invalid ID format',
-      })
-    }
 
     const vendor = await VendorModel.getById({ id })
 
@@ -34,8 +30,13 @@ export class VendorController {
 
   static async create(req, res) {
     const input = validatevendor(req.body)
+    // Obténer solo el nombre del archivo de la ruta
+    const fileName = path.basename(req.file.path)
+    // Agrega la ruta de la imagen al host del SV
+    const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
+    // console.log(imagePath)
     try {
-      const newVendor = await VendorModel.create({ input })
+      const newVendor = await VendorModel.create({ input, imagePath })
       res.status(201).json(newVendor)
     } catch (error) {
       res.status(500).json({
@@ -48,13 +49,16 @@ export class VendorController {
     const { id } = req.params
     const input = validatevendor(req.body)
 
-    if (!validate(id)) {
-      return res.status(400).json({
-        message: 'Invalid ID format',
-      })
-    }
+    // Obténer solo el nombre del archivo de la ruta
+    const fileName = path.basename(req.file.path)
+    // Agrega la ruta de la imagen al host del SV
+    const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
 
-    const { updatedVendor, result } = await VendorModel.update({ id, input })
+    const { updatedVendor, result } = await VendorModel.update({
+      id,
+      input,
+      imagePath,
+    })
 
     if (result.affectedRows === 0)
       return res.status(404).json({
@@ -66,12 +70,6 @@ export class VendorController {
 
   static async delete(req, res) {
     const { id } = req.params
-
-    if (!validate(id)) {
-      return res.status(400).json({
-        message: 'Invalid ID format',
-      })
-    }
 
     const { result } = await VendorModel.delete({ id })
 

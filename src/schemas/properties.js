@@ -2,15 +2,23 @@ import { z } from 'zod'
 
 const propertiesSchema = z.object({
   title: z.string().max(100),
-  price: z.number(),
-  image: z.string().max(200),
-  // image: z.string().max(200).url({
-  //     message: 'Image must be a valid URL'
-  // }),
+  price: z
+    .string()
+    .refine(val => !isNaN(Number(val)), { message: 'Invalid number' })
+    .transform(val => Number(val)),
   description: z.string(),
-  bedrooms: z.number().int().positive().max(30),
-  baths: z.number().int().positive().max(30),
-  garages: z.number().int().positive().max(30),
+  bedrooms: z
+    .string()
+    .refine(val => !isNaN(Number(val)), { message: 'Invalid number' })
+    .transform(val => Number(val)),
+  baths: z
+    .string()
+    .refine(val => !isNaN(Number(val)), { message: 'Invalid number' })
+    .transform(val => Number(val)),
+  garage: z
+    .string()
+    .refine(val => !isNaN(Number(val)), { message: 'Invalid number' })
+    .transform(val => Number(val)),
   created: z.string(),
   vendor_id: z.string().uuid(),
 })

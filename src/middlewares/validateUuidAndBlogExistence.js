@@ -1,7 +1,7 @@
 import { validate } from 'uuid'
 import { BlogModel } from '../models/blog.js'
 
-export const validateUuidAndEntityExistence = async (req, res, next) => {
+export const validateUuidAndBlogExistence = async (req, res, next) => {
   const { id } = req.params
 
   if (!validate(id)) {
