@@ -3,7 +3,7 @@ import { dirname, extname, join } from 'path'
 import { fileURLToPath } from 'url'
 
 export const CURRENT_DIR = dirname(fileURLToPath(import.meta.url))
-const MIMETYPES = [
+export const MIMETYPES = [
   'image/jpg',
   'image/jpeg',
   'image/png',
@@ -13,7 +13,7 @@ const MIMETYPES = [
 
 const multerUpload = multer({
   storage: multer.diskStorage({
-    destination: join(CURRENT_DIR, '../uploads'),
+    destination: join(CURRENT_DIR, '../../uploads'),
     filename: (req, file, cb) => {
       const fileExtension = extname(file.originalname)
       const fileName = file.originalname.split(fileExtension)[0]
@@ -21,11 +21,14 @@ const multerUpload = multer({
     },
   }),
   fileFilter: (req, file, cb) => {
-    if (MIMETYPES.includes(file.mimetype)) cb(null, true)
-    else cb(new Error(`Only ${MIMETYPES.join(' ')} mimetypes are allowed`))
+    if (MIMETYPES.includes(file.mimetype)) {
+      cb(null, true)
+    } else {
+      cb(new Error(`Only ${MIMETYPES.join(' ')} mimetypes are allowed`))
+    }
   },
   limits: {
-    fileSize: 10000000,
+    fileSize: 10000000, // 10 MB
   },
 })
 

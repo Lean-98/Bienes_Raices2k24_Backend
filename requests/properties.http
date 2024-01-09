@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/properties
 
 ### Recuperar una propiedad por id
-GET http://localhost:3000/api/properties/175b0014-a6b0-11ee-9d6e-4ccc6afcbba7
+GET http://localhost:3000/api/properties/cf751db9-ae7a-11ee-9d38-4ccc6afcbba7
 
 ### Crear una propiedad con POST
 POST http://localhost:3000/api/properties
@@ -22,7 +22,7 @@ Content-Type: application/json
   # }
 
 ### Borrar propiedad
-DELETE http://localhost:3000/api/properties/5883221e-ac3a-11ee-bc4a-4ccc6afcbba7
+DELETE http://localhost:3000/api/properties/cce48197-ae4c-11ee-9d38-4ccc6afcbba7
 
 ### Actualizar propiedad  
 PATCH http://localhost:3000/api/properties/6e548644-a8ea-11ee-ab73-4ccc6afcbba7

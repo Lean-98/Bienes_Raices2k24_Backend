@@ -1,7 +1,7 @@
 import { validate } from 'uuid'
 import { PropertyModel } from '../models/property.js'
 
-export const validateUuidAndPropertiesExistence = async (req, res, next) => {
+export const validateIdAndPropertyExistence = async (req, res, next) => {
   const { id } = req.params
 
   if (!validate(id)) {

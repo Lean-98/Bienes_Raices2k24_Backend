@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path, { join } from 'node:path'
 import { pool } from '../db.js'
-import { CURRENT_DIR } from '../multerconfig.js'
+import { CURRENT_DIR } from '../middlewares/multerConfig.js'
 
 export class VendorModel {
   static async getAll() {

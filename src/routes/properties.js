@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import { PropertyController } from '../controllers/properties.js'
-import upload from '../multerconfig.js'
 import {
-  validateUuidAndPropertiesExistence,
-  validateUUID,
+  validateIdAndPropertyExistence,
+  uploadAndValidateCombined,
+  errorHandler,
+  uploadAndValidateCombinedUpdate,
 } from '../middlewares/index.js'
 
 const propertiesRouter = Router()
@@ -11,16 +12,25 @@ const propertiesRouter = Router()
 propertiesRouter.get('/', PropertyController.getAll)
 propertiesRouter.get(
   '/:id',
-  validateUuidAndPropertiesExistence,
+  validateIdAndPropertyExistence,
   PropertyController.getById,
 )
-propertiesRouter.post('/', upload.single('image'), PropertyController.create)
+propertiesRouter.post(
+  '/',
+  uploadAndValidateCombined.single('image'),
+  errorHandler,
+  PropertyController.create,
+)
 propertiesRouter.patch(
   '/:id',
-  validateUuidAndPropertiesExistence,
-  upload.single('image'),
+  uploadAndValidateCombinedUpdate.single('image'),
+  errorHandler,
   PropertyController.update,
 )
-propertiesRouter.delete('/:id', validateUUID, PropertyController.delete)
+propertiesRouter.delete(
+  '/:id',
+  validateIdAndPropertyExistence,
+  PropertyController.delete,
+)
 
 export default propertiesRouter

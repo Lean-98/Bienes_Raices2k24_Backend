@@ -9,10 +9,11 @@ import VendorsRoutes from './routes/vendors.js'
 import { corsMiddlewares } from './middlewares/cors.js'
 import { SECRECT_KEY_SESSION } from './config.js'
 import { join } from 'path'
-import { CURRENT_DIR } from './multerconfig.js'
+import { CURRENT_DIR } from '../src/middlewares/multerConfig.js'
 
 const app = express()
 app.use(express.json())
+app.use(express.urlencoded({ extended: true })) // Configurar para manejar datos de formulario
 app.use(corsMiddlewares())
 app.disable('x-powered-by')
 app.use(
@@ -23,7 +24,7 @@ app.use(
   }),
 )
 
-app.use('/public', express.static(join(CURRENT_DIR, '../uploads')))
+app.use('/public', express.static(join(CURRENT_DIR, '../../uploads')))
 app.use('/api/testing', testingRoutes)
 app.use('/api/blogs', blogsRoutes)
 app.use('/api', adminRoutes)
