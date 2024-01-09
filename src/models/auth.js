@@ -18,23 +18,19 @@ export class AuthModel {
   }
 
   static async create({ input }) {
-    try {
-      const { id, email, pword, role } = input
-      const saltRounds = 7
-      const hashedPword = bcrypt.hashSync(pword, saltRounds)
+    const { id, email, pword, role } = input
+    const saltRounds = 7
+    const hashedPword = bcrypt.hashSync(pword, saltRounds)
 
-      const [rows] = await pool.query(
-        'INSERT INTO users (id, email, pword, role) VALUES (?, ?, ?, ?)',
-        [id, email, hashedPword, role],
-      )
+    const [rows] = await pool.query(
+      'INSERT INTO users (id, email, pword, role) VALUES (?, ?, ?, ?)',
+      [id, email, hashedPword, role],
+    )
 
-      const newUser = {
-        ...input,
-        pword: hashedPword,
-      }
-      return newUser
-    } catch (error) {
-      throw new Error('Error creating user')
+    const newUser = {
+      ...input,
+      pword: hashedPword,
     }
+    return newUser
   }
 }

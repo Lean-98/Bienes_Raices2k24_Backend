@@ -2,32 +2,34 @@
 GET http://localhost:3000/api/blogs
 
 ### Recuperar un blog por id
-GET http://localhost:3000/api/blogs/b555e27c-abd4-11ee-bc4a-4ccc6afcbba7
+GET http://localhost:3000/api/blogs/9dd8ba20-ae98-11ee-9d38-4ccc6afcbba7
 
 ### Crear una blog con POST
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
-
-{
-    "title": "Testing 144",
-    "created": "2024/01/01",
-    "author": "Admin",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
-    "image": "img.jpg" 
-}
+  
+// Usar thunder client para subir la imagen
+# {
+#     "title": "Testing 144",
+#     "created": "2024/01/01",
+#     "author": "Admin",
+#     "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
+#     "image": "img.jpg" 
+# }
 
 ### Borrar blog
-DELETE http://localhost:3000/api/blogs/0859d786-abf6-11ee-bc4a-4ccc6afcbba7
+DELETE http://localhost:3000/api/blogs/d69f2c94-ae96-11ee-9d38-4ccc6afcbba7
 
 
 ### Actualizar blog  
 PATCH  http://localhost:3000/api/blogs/ee574737-a664-11ee-939e-4ccc6afcbba7
 Content-Type: application/json
-
-{
-    "title": "Testing update01",
-    "created": "2024/01/01",
-    "author": "AdminPro",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
-    "image": "img.png" 
-}
+  
+// Usar thunder client para subir la imagen
+# {
+#     "title": "Testing update01",
+#     "created": "2024/01/01",
+#     "author": "AdminPro",
+#     "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus.",
+#     "image": "img.png" 
+# }

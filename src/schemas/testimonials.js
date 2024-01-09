@@ -1,16 +1,13 @@
 import { z } from 'zod'
 
-const testimonialSchema = z.object({
-  author: z.string().max(50),
-  content: z.string(),
+export const testimonialSchema = z.object({
+  author: z
+    .string()
+    .max(50)
+    .refine(val => val.length >= 3, {
+      message: 'Author must have more than 3 characters',
+    }),
+  content: z.string().refine(val => val.length > 30, {
+    message: 'Content must have more than 30 characters',
+  }),
 })
-
-export function validateTestimonial(objet) {
-  const result = testimonialSchema.safeParse(objet)
-
-  if (result.success) {
-    return result.data
-  } else {
-    throw new Error(result.error)
-  }
-}

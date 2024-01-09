@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/testimonials
 
 ### Recuperar un testimonial por id
-GET http://localhost:3000/api/testimonials/561c67f7-a64e-11ee-939e-4ccc6afcbba7
+GET http://localhost:3000/api/testimonials/1c944ac5-af10-11ee-8927-4ccc6afcbba7
 
 ### Crear una testimonial con POST
 POST http://localhost:3000/api/testimonials
@@ -22,6 +22,6 @@ PATCH  http://localhost:3000/api/testimonials/e02a97e1-a8de-11ee-ab73-4ccc6afcbb
 Content-Type: application/json
 
 {
-    "author": "Alexis Bazan",
+    "author": "Alexis LHDA",
     "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit phasellus."
 }

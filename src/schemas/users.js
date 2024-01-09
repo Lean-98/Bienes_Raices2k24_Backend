@@ -1,18 +1,20 @@
 import { z } from 'zod'
 
-const usersSchema = z.object({
-  id: z.number().int().positive(),
+export const usersSchema = z.object({
+  id: z.number().int().positive({
+    message: 'Id must be an integer value greater 0',
+  }),
   email: z.string().email().max(60),
-  pword: z.string().max(60),
-  role: z.string().max(60),
+  pword: z
+    .string()
+    .max(60)
+    .refine(val => val.length >= 8, {
+      message: 'Password must have at least 8 characters',
+    }),
+  role: z
+    .string()
+    .max(60)
+    .refine(val => val.length >= 5, {
+      message: 'Role must have more than 5 characters',
+    }),
 })
-
-export function validateuser(objet) {
-  const result = usersSchema.safeParse(objet)
-
-  if (result.success) {
-    return result.data
-  } else {
-    throw new Error(result.error)
-  }
-}

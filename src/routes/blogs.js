@@ -1,19 +1,28 @@
 import { Router } from 'express'
 import { BlogController } from '../controllers/blogs.js'
-// import upload from '../multerconfig.js'
-import { validateUuidAndBlogExistence } from '../middlewares/index.js'
+import {
+  errorHandler,
+  uploadAndValidateCombinedBlog,
+  uploadAndValidateCombinedBlogUpdate,
+  validateIdAndBlogExistence,
+} from '../middlewares/index.js'
 
 const blogsRouter = Router()
 
 blogsRouter.get('/', BlogController.getAll)
-blogsRouter.get('/:id', validateUuidAndBlogExistence, BlogController.getById)
-// blogsRouter.post('/', upload.single('image'), BlogController.create)
+blogsRouter.get('/:id', validateIdAndBlogExistence, BlogController.getById)
+blogsRouter.post(
+  '/',
+  uploadAndValidateCombinedBlog.single('image'),
+  errorHandler,
+  BlogController.create,
+)
 blogsRouter.patch(
   '/:id',
-  validateUuidAndBlogExistence,
-  // upload.single('image'),
+  uploadAndValidateCombinedBlogUpdate.single('image'),
+  errorHandler,
   BlogController.update,
 )
-blogsRouter.delete('/:id', BlogController.delete)
+blogsRouter.delete('/:id', validateIdAndBlogExistence, BlogController.delete)
 
 export default blogsRouter

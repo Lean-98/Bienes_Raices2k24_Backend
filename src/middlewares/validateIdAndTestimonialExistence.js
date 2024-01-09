@@ -1,7 +1,7 @@
 import { validate } from 'uuid'
-import { BlogModel } from '../models/blog.js'
+import { TestimonialModel } from '../models/testimonial.js'
 
-export const validateUuidAndBlogExistence = async (req, res, next) => {
+export const validateIdAndTestimonialExistence = async (req, res, next) => {
   const { id } = req.params
 
   if (!validate(id)) {
@@ -10,9 +10,9 @@ export const validateUuidAndBlogExistence = async (req, res, next) => {
     })
   }
 
-  const existingBlog = await BlogModel.find({ id })
+  const existingTestomonial = await TestimonialModel.find({ id })
 
-  if (!existingBlog) {
+  if (!existingTestomonial) {
     return res.status(404).json({
       message: 'Blog not found',
     })

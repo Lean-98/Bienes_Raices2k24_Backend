@@ -5,7 +5,7 @@ export const propertySchema = z.object({
     .string()
     .max(100)
     .refine(val => val.length > 15, {
-      message: 'Description must have more than 15 characters',
+      message: 'Title must have more than 15 characters',
     }),
   price: z
     .string()

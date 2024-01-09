@@ -1,18 +1,11 @@
 import { VendorModel } from '../models/vendor.js'
-import { validatevendor } from '../schemas/vendors.js'
 import { DB_HOST, PORT } from '../config.js'
 import path from 'node:path'
 
 export class VendorController {
   static async getAll(req, res) {
-    try {
-      const vendors = await VendorModel.getAll()
-      res.json(vendors)
-    } catch (error) {
-      res.status(500).json({
-        message: 'Something goes wrong',
-      })
-    }
+    const vendors = await VendorModel.getAll()
+    res.json(vendors)
   }
 
   static async getById(req, res) {
@@ -29,25 +22,21 @@ export class VendorController {
   }
 
   static async create(req, res) {
-    const input = validatevendor(req.body)
+    const input = req.validatedInput
     // Obténer solo el nombre del archivo de la ruta
     const fileName = path.basename(req.file.path)
     // Agrega la ruta de la imagen al host del SV
     const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
     // console.log(imagePath)
-    try {
-      const newVendor = await VendorModel.create({ input, imagePath })
-      res.status(201).json(newVendor)
-    } catch (error) {
-      res.status(500).json({
-        message: 'Something goes wrong',
-      })
-    }
+
+    const newVendor = await VendorModel.create({ input, imagePath })
+
+    res.status(201).json(newVendor)
   }
 
   static async update(req, res) {
     const { id } = req.params
-    const input = validatevendor(req.body)
+    const input = req.validatedInput
 
     // Obténer solo el nombre del archivo de la ruta
     const fileName = path.basename(req.file.path)
@@ -77,6 +66,7 @@ export class VendorController {
       return res.status(404).json({
         message: 'Vendor not found',
       })
+
     res.sendStatus(204)
   }
 }

@@ -2,9 +2,9 @@ import { Router } from 'express'
 import { PropertyController } from '../controllers/properties.js'
 import {
   validateIdAndPropertyExistence,
-  uploadAndValidateCombined,
+  uploadAndValidateCombinedProperty,
   errorHandler,
-  uploadAndValidateCombinedUpdate,
+  uploadAndValidateCombinedPropertyUpdate,
 } from '../middlewares/index.js'
 
 const propertiesRouter = Router()
@@ -17,13 +17,13 @@ propertiesRouter.get(
 )
 propertiesRouter.post(
   '/',
-  uploadAndValidateCombined.single('image'),
+  uploadAndValidateCombinedProperty.single('image'),
   errorHandler,
   PropertyController.create,
 )
 propertiesRouter.patch(
   '/:id',
-  uploadAndValidateCombinedUpdate.single('image'),
+  uploadAndValidateCombinedPropertyUpdate.single('image'),
   errorHandler,
   PropertyController.update,
 )

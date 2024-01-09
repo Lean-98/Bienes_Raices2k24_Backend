@@ -1,23 +1,36 @@
 import { Router } from 'express'
 import { VendorController } from '../controllers/vendors.js'
-// import upload from '../multerconfig.js'
-import { validateUuidAndVendorsExistence } from '../middlewares/index.js'
+import {
+  errorHandler,
+  uploadAndValidateCombinedVendor,
+  uploadAndValidateCombinedVendorUpdate,
+  validateIdAndVendorExistence,
+} from '../middlewares/index.js'
 
 const vendorsRouter = Router()
 
 vendorsRouter.get('/', VendorController.getAll)
 vendorsRouter.get(
   '/:id',
-  validateUuidAndVendorsExistence,
+  validateIdAndVendorExistence,
   VendorController.getById,
 )
-// vendorsRouter.post('/', upload.single('image'), VendorController.create)
+vendorsRouter.post(
+  '/',
+  uploadAndValidateCombinedVendor.single('image'),
+  errorHandler,
+  VendorController.create,
+)
 vendorsRouter.patch(
   '/:id',
-  validateUuidAndVendorsExistence,
-  // upload.single('image'),
+  uploadAndValidateCombinedVendorUpdate.single('image'),
+  errorHandler,
   VendorController.update,
 )
-vendorsRouter.delete('/:id', VendorController.delete)
+vendorsRouter.delete(
+  '/:id',
+  validateIdAndVendorExistence,
+  VendorController.delete,
+)
 
 export default vendorsRouter

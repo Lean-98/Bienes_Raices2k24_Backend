@@ -1,7 +1,7 @@
 import { validate } from 'uuid'
 import { VendorModel } from '../models/vendor.js'
 
-export const validateUuidAndVendorsExistence = async (req, res, next) => {
+export const validateIdAndVendorExistence = async (req, res, next) => {
   const { id } = req.params
 
   if (!validate(id)) {

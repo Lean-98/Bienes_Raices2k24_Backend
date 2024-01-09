@@ -18,7 +18,7 @@ Content-Type: application/json
 # }
 
 ### Borrar vendedor
-DELETE http://localhost:3000/api/vendors/5883221e-ac3a-11ee-bc4a-4ccc6afcbba7
+DELETE http://localhost:3000/api/vendors/38417872-aee8-11ee-8927-4ccc6afcbba7
 
 
 ### Actualizar vendedor  

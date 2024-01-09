@@ -1,18 +1,11 @@
 import { BlogModel } from '../models/blog.js'
-import { validateblog } from '../schemas/blogs.js'
 import { DB_HOST, PORT } from '../config.js'
 import path from 'node:path'
 
 export class BlogController {
   static async getAll(req, res) {
-    try {
-      const blogs = await BlogModel.getAll()
-      res.json(blogs)
-    } catch (error) {
-      res.status(500).json({
-        message: 'Something goes wrong',
-      })
-    }
+    const blogs = await BlogModel.getAll()
+    res.json(blogs)
   }
 
   static async getById(req, res) {
@@ -20,30 +13,31 @@ export class BlogController {
 
     const blog = await BlogModel.getById({ id })
 
+    if (!blog)
+      return res.status(404).json({
+        message: 'Property not found',
+      })
+
     res.send(blog)
   }
 
   static async create(req, res) {
-    const input = validateblog(req.body)
+    const input = req.validatedInput
+
     // Obténer solo el nombre del archivo de la ruta
     const fileName = path.basename(req.file.path)
     // Agrega la ruta de la imagen al host del SV
     const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
     // console.log(imagePath)
 
-    try {
-      const newBlog = await BlogModel.create({ input, imagePath })
-      res.status(201).json(newBlog)
-    } catch (error) {
-      return res.status(500).json({
-        message: 'Something goes wrong',
-      })
-    }
+    const newBlog = await BlogModel.create({ input, imagePath })
+
+    res.status(201).json(newBlog)
   }
 
   static async update(req, res) {
     const { id } = req.params
-    const input = validateblog(req.body)
+    const input = req.validatedInput
 
     // Obténer solo el nombre del archivo de la ruta
     const fileName = path.basename(req.file.path)
@@ -73,6 +67,7 @@ export class BlogController {
       return res.status(404).json({
         message: 'Blog not found',
       })
+
     res.sendStatus(204)
   }
 }

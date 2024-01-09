@@ -1,5 +1,4 @@
 import { AuthModel } from '../models/auth.js'
-import { validateuser } from '../schemas/users.js'
 
 export class AuthController {
   static async loginAdmin(req, res) {
@@ -16,7 +15,7 @@ export class AuthController {
   }
 
   static async create(req, res) {
-    const input = validateuser(req.body)
+    const input = req.validatedInput
 
     const newUser = await AuthModel.create({ input })
     res.status(201).json(newUser)
