@@ -14,7 +14,7 @@ export const validateIdAndTestimonialExistence = async (req, res, next) => {
 
   if (!existingTestomonial) {
     return res.status(404).json({
-      message: 'Blog not found',
+      message: 'Testimonial not found',
     })
   }
 

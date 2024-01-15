@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/blogs
 
 ### Recuperar un blog por id
-GET http://localhost:3000/api/blogs/9dd8ba20-ae98-11ee-9d38-4ccc6afcbba7
+GET http://localhost:3000/api/blogs/3466afbb-b302-11ee-9975-4ccc6afcbba7
 
 ### Crear una blog con POST
 POST http://localhost:3000/api/blogs
