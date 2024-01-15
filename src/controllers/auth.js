@@ -11,7 +11,10 @@ export class AuthController {
         req.session.user = user
         res.redirect('/admin')
       } else {
-        res.redirect('/login')
+        // res.redirect('/login')
+        res.status(401).json({
+          message: 'Incorrect credentials',
+        })
       }
     } catch (err) {
       console.error('Error when logging in:', err)

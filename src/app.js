@@ -10,6 +10,7 @@ import { corsMiddlewares } from './middlewares/cors.js'
 import { SECRECT_KEY_SESSION } from './config.js'
 import { join } from 'path'
 import { CURRENT_DIR } from '../src/middlewares/multerConfig.js'
+import { authorizeAdmin } from '../src/middlewares/authorizeAdmin.js'
 
 const app = express()
 app.use(express.json())
@@ -25,13 +26,14 @@ app.use(
 )
 
 app.use('/public', express.static(join(CURRENT_DIR, '../../uploads')))
-app.use('/api/testing', testingRoutes)
-app.use('/api/blogs', blogsRoutes)
+app.use('/api/testing', authorizeAdmin, testingRoutes)
+app.use('/api/blogs', authorizeAdmin, blogsRoutes)
 app.use('/api', adminRoutes)
-app.use('/api/properties', propertiesRoutes)
-app.use('/api/testimonials', testimonialsRoutes)
-app.use('/api/vendors', VendorsRoutes)
+app.use('/api/properties', authorizeAdmin, propertiesRoutes)
+app.use('/api/testimonials', authorizeAdmin, testimonialsRoutes)
+app.use('/api/vendors', authorizeAdmin, VendorsRoutes)
 
+// MIddleware para manejar rutas no encontradas
 app.use((req, res, next) => {
   res.status(404).json({
     message: 'endpoint not found',
