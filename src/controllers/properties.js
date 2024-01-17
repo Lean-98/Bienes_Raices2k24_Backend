@@ -39,21 +39,22 @@ export class PropertyController {
     const input = req.validatedInput
 
     try {
-      if (!req.file)
+      if (!req.files || req.files.length === 0)
         return res.status(400).json({
-          message: 'File upload is required',
+          message: 'At least one file upload is required',
         })
-      // Obténer solo el nombre del archivo de la ruta
-      const fileName = path.basename(req.file.path)
-      // Agrega la ruta de la imagen al host del SV
-      const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
 
-      const newProperty = await PropertyModel.create({
-        input,
-        imagePath,
+      const imagePaths = req.files.map(file => {
+        const fileName = path.basename(file.path)
+        return `http://${DB_HOST}:${PORT}/public/${fileName}`
       })
 
-      res.status(201).json(newProperty)
+      const newProperties = await PropertyModel.create({
+        input,
+        imagePaths,
+      })
+
+      res.status(201).json(newProperties)
     } catch (err) {
       console.error('Error creating Property:', err)
       res.status(500).json({
@@ -67,19 +68,15 @@ export class PropertyController {
     const input = req.validatedInput
 
     try {
-      if (!req.file)
-        return res.status(400).json({
-          message: 'File upload is required',
-        })
-      // Obténer solo el nombre del archivo de la ruta
-      const fileName = path.basename(req.file.path)
-      // Agrega la ruta de la imagen al host del SV
-      const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
+      const imagePaths = req.files.map(file => {
+        const fileName = path.basename(file.path)
+        return `http://${DB_HOST}:${PORT}/public/${fileName}`
+      })
 
       const { result, updatedProperty } = await PropertyModel.update({
         id,
         input,
-        imagePath,
+        imagePaths,
       })
 
       if (result.affectedRows === 0)

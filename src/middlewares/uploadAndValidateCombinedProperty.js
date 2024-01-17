@@ -7,13 +7,28 @@ import { propertySchema } from '../schemas/properties.js'
 import { ValidationError } from './ValidationError.js'
 
 /*
-  El middleware `uploadAndValidateCombinedProperty` gestiona la carga de archivos,
-  realiza validaciones detalladas sobre la solicitud y utiliza la biblioteca `Zod`
-  para definir y validar el esquema de los datos. Incluye verificación del formato
-  de UUID, consulta a la base de datos, validación del tipo MIME y reglas específicas
-  para cada campo. En caso de errores, utiliza un error personalizado (`ValidationError`)
-  para proporcionar mensajes detallados sobre la validación. Además, establece límites,
-  como el tamaño máximo del archivo permitido.
+ El middleware `uploadAndValidateCombinedProperty` gestiona la carga de archivos,
+ utiliza la biblioteca Multer para manejar la subida de archivos y configura la ubicación
+ de almacenamiento y nombres de archivo únicos con marcas de tiempo.
+
+ La biblioteca Zod se utiliza para definir y validar el esquema de los datos, asegurando
+ que los inputs cumplan con ciertas reglas y estructuras.
+
+ El middleware realiza una validación exhaustiva, incluyendo la verificación del formato
+ de UUID para `vendor_id`, consulta a la base de datos para confirmar su existencia,
+ validación del tipo MIME del archivo y restricciones específicas para cada campo de la solicitud.
+
+ En caso de errores, se lanza un error personalizado (`ValidationError`) que proporciona
+ mensajes detallados sobre la validación fallida, brindando información útil para la
+ depuración y corrección.
+
+ Se establece un límite máximo de tamaño de archivo permitido (10 MB) para evitar la carga
+ de archivos excesivamente grandes que podrían afectar el rendimiento del sistema o la seguridad.
+
+ En situaciones exitosas, el middleware construye un objeto con los datos de la solicitud y
+ la información del archivo, asignándolo a `req.validatedInput`. Esto asegura que solo se
+ procesen archivos que cumplan con los criterios definidos, proporcionando una capa adicional
+ de seguridad y validación previa antes de manipular los datos en la aplicación.
 */
 
 export const uploadAndValidateCombinedProperty = multer({
@@ -57,9 +72,29 @@ export const uploadAndValidateCombinedProperty = multer({
         ])
       }
 
+      // Validar el tamaño del archivo
+      if (file.size > 10000000) {
+        throw new ValidationError([
+          {
+            message: 'File size exceeds the limit of 10 MB',
+          },
+        ])
+      }
+
+      // Validar el número máximo de archivos permitidos (6 en este caso)
+      if (req.files.length > 6) {
+        throw new ValidationError([
+          {
+            message: 'Maximum number of images allowed is 6',
+          },
+        ])
+      }
+
       const inputData = {
         ...req.body,
-        image: req.file?.filename || req.body.image,
+        images: Array.isArray(req.files)
+          ? req.files.map(file => file.filename)
+          : [],
       }
 
       // Validar el cuerpo de la solicitud con el schema de Zod

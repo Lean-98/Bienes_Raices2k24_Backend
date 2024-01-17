@@ -17,13 +17,13 @@ propertiesRouter.get(
 )
 propertiesRouter.post(
   '/',
-  uploadAndValidateCombinedProperty.single('image'),
+  uploadAndValidateCombinedProperty.array('images', 6),
   errorHandler,
   PropertyController.create,
 )
 propertiesRouter.patch(
   '/:id',
-  uploadAndValidateCombinedPropertyUpdate.single('image'),
+  uploadAndValidateCombinedPropertyUpdate.array('images', 6),
   errorHandler,
   PropertyController.update,
 )

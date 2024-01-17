@@ -69,9 +69,28 @@ export const uploadAndValidateCombinedPropertyUpdate = multer({
         ])
       }
 
+      // Validar el tamaño del archivo
+      if (file.size > 10000000) {
+        throw new ValidationError([
+          {
+            message: 'File size exceeds the limit of 10 MB',
+          },
+        ])
+      }
+
+      if (req.files.length > 6) {
+        throw new ValidationError([
+          {
+            message: 'Maximum number of images allowed is 6',
+          },
+        ])
+      }
+
       const inputData = {
         ...req.body,
-        image: req.file?.filename || req.body.image,
+        images: Array.isArray(req.files)
+          ? req.files.map(file => file.filename)
+          : [],
       }
 
       // Validar el cuerpo de la solicitud con el schema de Zod

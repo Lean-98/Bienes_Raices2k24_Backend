@@ -27,7 +27,7 @@ export class PropertyModel {
     return rows[0]
   }
 
-  static async create({ input, imagePath }) {
+  static async create({ input, imagePaths }) {
     const {
       title,
       price,
@@ -42,6 +42,8 @@ export class PropertyModel {
     // ID creation
     const [uuidResult] = await pool.query('SELECT UUID() id')
     const [{ id }] = uuidResult
+
+    // Insertar la propiedad con todas las imágenes
     const [rows] = await pool.query(
       `INSERT INTO properties (id, title, price, description, bedrooms, baths, garage, created, vendor_id, image) VALUES (UUID_TO_BIN("${id}"),?, ?, ?, ?, ?, ?, ?, UUID_TO_BIN(?), ?)`,
       [
@@ -53,19 +55,20 @@ export class PropertyModel {
         garage,
         created,
         vendor_id,
-        imagePath,
+        imagePaths.map(filePath => path.basename(filePath)).join(','), // Concatenar los nombres de archivo de las imágenes en una cadena separada por comas
       ],
     )
 
     const newProperty = {
       id,
       ...input,
-      image: imagePath,
+      image: imagePaths,
     }
+
     return newProperty
   }
 
-  static async update({ id, input, imagePath }) {
+  static async update({ id, input, imagePaths }) {
     const {
       title,
       price,
@@ -81,24 +84,30 @@ export class PropertyModel {
     const vendor_id_bin = Buffer.from(vendor_id.replace(/-/g, ''), 'hex')
 
     // Obtener la imagen actual
-    const [currentImageRow] = await pool.query(
+    const [currentImagesRow] = await pool.query(
       'SELECT image FROM properties WHERE id = UUID_TO_BIN(?)',
       [id],
     )
 
-    // Si la imagen actual existe, eliminarla
-    if (currentImageRow.length > 0) {
-      const currentImagePath = path.join(
-        CURRENT_DIR,
-        '../../uploads',
-        path.basename(currentImageRow[0].image),
+    // Convertir la cadena de nombres de archivo a un array de strings
+    const currentImagePaths =
+      currentImagesRow.length > 0 ? currentImagesRow[0].image.split(',') : []
+
+    console.log('Current image paths to delete:', currentImagePaths)
+
+    // Resto del código para eliminar las imágenes actuales
+    try {
+      await Promise.all(
+        currentImagePaths.map(async fileName => {
+          const imagePath = path.join(CURRENT_DIR, '../../uploads', fileName)
+          await fs.unlink(imagePath)
+          console.log('File deleted successfully:', imagePath)
+        }),
       )
-      // console.log(currentImagePath)
-      try {
-        await fs.unlink(currentImagePath)
-      } catch (error) {
-        console.error(`Failed to delete file: ${currentImagePath}`)
-      }
+    } catch (error) {
+      console.error('Failed to delete files:', currentImagePaths)
+      console.error('Error details:', error.message)
+      console.error('Error stack:', error.stack)
     }
 
     const [result] = await pool.query(
@@ -106,7 +115,8 @@ export class PropertyModel {
       [
         title,
         price,
-        imagePath,
+        // Almacena solo los nombres de archivo
+        imagePaths.map(filePath => path.basename(filePath)).join(','),
         description,
         bedrooms,
         baths,
@@ -126,32 +136,47 @@ export class PropertyModel {
   }
 
   static async delete({ id }) {
-    const [image] = await pool.query(
+    // Obtener la información de la imagen antes de eliminar la propiedad
+    const [imageRow] = await pool.query(
       'SELECT image FROM properties WHERE id = UUID_TO_BIN(?)',
       [id],
     )
 
+    // Eliminar la propiedad por ID
     const [result] = await pool.query(
       'DELETE FROM properties WHERE id = UUID_TO_BIN(?)',
       [id],
     )
 
-    if (image.length > 0) {
-      const nameImageDb = image[0].image
-      const nameImage = nameImageDb.substring(nameImageDb.lastIndexOf('/') + 1)
-      // console.log('Image name:', nameImage)
-      const routeImage = join(CURRENT_DIR, '../../uploads', nameImage)
+    // Verificar si se encontró una imagen asociada a la propiedad
+    if (imageRow.length > 0) {
+      // Iterar sobre cada ruta de imagen y eliminarla por separado
+      const imagePaths = imageRow[0].image.split(',')
 
-      fs.unlink(routeImage, err => {
-        if (err) {
-          console.error('There was an error deleting the file:', err)
-        } else {
-          console.log('File deleted successfully')
-        }
-      })
+      await Promise.all(
+        imagePaths.map(async imageName => {
+          // Construir la ruta completa de la imagen en el servidor
+          const imagePath = join(
+            CURRENT_DIR,
+            '../../uploads',
+            path.basename(imageName),
+          )
+
+          // Eliminar la imagen asociada a la propiedad
+          try {
+            await fs.unlink(imagePath)
+            console.log('Image deleted successfully:', imagePath)
+          } catch (error) {
+            console.error('Failed to delete image:', imagePath)
+            console.error('Error details:', error.message)
+            console.error('Error stack:', error.stack)
+          }
+        }),
+      )
     } else {
-      console.log('The image with the specified name was not found')
+      console.log('No image found for the specified property.')
     }
-    return { result, image }
+
+    return { result, image: imageRow }
   }
 }
