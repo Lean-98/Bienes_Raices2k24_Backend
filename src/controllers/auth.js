@@ -9,7 +9,7 @@ export class AuthController {
 
       if (user && (await AuthModel.validPassword(password, user.pword))) {
         req.session.user = user
-        res.redirect('/admin')
+        res.redirect('/dashboard')
       } else {
         // res.redirect('/login')
         res.status(401).json({

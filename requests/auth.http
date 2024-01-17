@@ -1,16 +1,15 @@
 
 ### Login admin
-POST  http://localhost:3000/api/login
+POST  http://localhost:3000/api/admin/login
 Content-Type: application/json
 
 {
     "email": "admin@admin.arg",
-    "password": "password"
+    "password": "passoword"
 }
 
-
 ### Crear user admin con POST
-POST http://localhost:3000/api/
+POST http://localhost:3000/api/admin
 Content-Type: application/json
 
 {

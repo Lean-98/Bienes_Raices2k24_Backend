@@ -28,7 +28,7 @@ app.use(
 app.use('/public', express.static(join(CURRENT_DIR, '../../uploads')))
 app.use('/api/testing', authorizeAdmin, testingRoutes)
 app.use('/api/blogs', authorizeAdmin, blogsRoutes)
-app.use('/api', adminRoutes)
+app.use('/api/admin', adminRoutes)
 app.use('/api/properties', authorizeAdmin, propertiesRoutes)
 app.use('/api/testimonials', authorizeAdmin, testimonialsRoutes)
 app.use('/api/vendors', authorizeAdmin, VendorsRoutes)
