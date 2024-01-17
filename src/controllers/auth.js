@@ -8,8 +8,10 @@ export class AuthController {
       const user = await AuthModel.findByEmail(email)
 
       if (user && (await AuthModel.validPassword(password, user.pword))) {
+        // Establecer el usuario en la sesión
         req.session.user = user
-        res.redirect('/dashboard')
+
+        res.redirect('/api/admin')
       } else {
         // res.redirect('/login')
         res.status(401).json({

@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "email": "admin@admin.arg",
-    "password": "passoword"
+    "password": "password"
 }
 
 ### Crear user admin con POST
