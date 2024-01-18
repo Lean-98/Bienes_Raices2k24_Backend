@@ -2,7 +2,7 @@ import { pool } from '../db.js'
 import bcrypt from 'bcrypt'
 
 export class AuthModel {
-  static async findByEmail(email) {
+  static async findByEmail({ email }) {
     const [rows] = await pool.execute(
       'SELECT email, pword, role FROM users WHERE email = ?',
       [email],

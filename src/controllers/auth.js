@@ -1,19 +1,23 @@
 import { AuthModel } from '../models/auth.js'
+import jwt from 'jsonwebtoken'
 
 export class AuthController {
   static async loginAdmin(req, res) {
     const { email, password } = req.body
 
     try {
-      const user = await AuthModel.findByEmail(email)
+      const user = await AuthModel.findByEmail({ email })
 
       if (user && (await AuthModel.validPassword(password, user.pword))) {
-        // Establecer el usuario en la sesión
-        req.session.user = user
+        // Generar un token JWT
+        const token = jwt.sign(
+          { email: user.email, role: user.role },
+          'secret_key',
+        )
 
-        res.redirect('/api/admin')
+        // Enviar el token en la respuesta
+        res.json({ token })
       } else {
-        // res.redirect('/login')
         res.status(401).json({
           message: 'Incorrect credentials',
         })

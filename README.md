@@ -19,4 +19,5 @@ REST API MVC - Node Express MySQL
 4. **Mejoras en la integración con la base de datos:**
    Se realizaron ajustes en las consultas a la base de datos para garantizar una gestión precisa de las rutas de las imágenes, facilitando la actualización y eliminación sin problemas.
 
-Estas mejoras están diseñadas para hacer que la gestión de propiedades y sus imágenes sea más robusta y fácil de usar.
+5. **Refactorización del manejo de autenticación:**
+   Se reemplazó express-session con JWT para mejorar la seguridad y simplicidad. Ahora se utilizan tokens JWT para gestionar la autenticación del usuario, eliminando la necesidad de sesiones basadas en cookies. Esto mejora la seguridad general de la aplicación y simplifica el código.

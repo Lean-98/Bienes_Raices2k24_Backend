@@ -8,4 +8,3 @@ export const DB_PASSWORD = process.env.DB_PASSWORD || 'root'
 export const DB_HOST = process.env.DB_HOST || 'localhost'
 export const DB_PORT = process.env.DB_PORT || 3006
 export const DB_DATABASE = process.env.DB_DATABASE || 'bienes-raices-db'
-export const SECRECT_KEY_SESSION = process.env.SECRECT_KEY_SESSION
