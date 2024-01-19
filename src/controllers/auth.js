@@ -1,9 +1,11 @@
 import { AuthModel } from '../models/auth.js'
 import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../config.js'
 
 export class AuthController {
   static async loginAdmin(req, res) {
     const { email, password } = req.body
+    const secretKey = JWT_SECRET
 
     try {
       const user = await AuthModel.findByEmail({ email })
@@ -12,11 +14,14 @@ export class AuthController {
         // Generar un token JWT
         const token = jwt.sign(
           { email: user.email, role: user.role },
-          'secret_key',
+          secretKey,
+          {
+            expiresIn: 60 * 60 * 24,
+          },
         )
 
-        // Enviar el token en la respuesta
-        res.json({ token })
+        // Enviar el token en el encabezado de la respuesta
+        res.header('Authorization', 'Bearer ' + token).json({ token })
       } else {
         res.status(401).json({
           message: 'Incorrect credentials',

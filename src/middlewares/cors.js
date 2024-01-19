@@ -4,13 +4,7 @@ import cors from 'cors'
 // métodos complejos: PUT/PATCH/DELETE
 // CORS PRE-Flight
 
-const ACCEPTED_ORIGINS = [
-  'http://localhost:8080',
-  'http://localhost:1234',
-  'http://127.0.0.1:5500',
-  'http://localhost:3000',
-  'https://bienesraices2k24backend-production.up.railway.app',
-]
+const ACCEPTED_ORIGINS = ['http://localhost:8080', 'http://localhost:3000']
 
 export const corsMiddlewares = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) =>
   cors({
@@ -25,4 +19,7 @@ export const corsMiddlewares = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) =>
 
       return callback(new Error('Not allowed by CORS'))
     },
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
   })
