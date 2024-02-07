@@ -44,9 +44,13 @@ export class PropertyController {
           message: 'At least one file upload is required',
         })
 
-      const imagePaths = req.files.map(file => {
+      // Convierte el FileList(Formik) en un array de archivos
+      const files = Array.from(req.files)
+
+      const imagePaths = files.map(file => {
         const fileName = path.basename(file.path)
-        return `http://${DB_HOST}:${PORT}/public/${fileName}`
+        const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
+        return imagePath
       })
 
       const newProperties = await PropertyModel.create({
@@ -68,9 +72,12 @@ export class PropertyController {
     const input = req.validatedInput
 
     try {
-      const imagePaths = req.files.map(file => {
+      // Convierte el FileList(Formik) en un array de archivos
+      const files = Array.from(req.files)
+      const imagePaths = files.map(file => {
         const fileName = path.basename(file.path)
-        return `http://${DB_HOST}:${PORT}/public/${fileName}`
+        const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
+        return imagePath
       })
 
       const { result, updatedProperty } = await PropertyModel.update({

@@ -55,7 +55,7 @@ export const uploadAndValidateCombinedVendorUpdate = multer({
 
       const inputData = {
         ...req.body,
-        image: req.file?.filename || req.body.image,
+        image: req.files ? req.files.map(file => file.filename) : [],
       }
 
       // Validar el cuerpo de la solicitud con el schema de Zod

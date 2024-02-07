@@ -1,4 +1,4 @@
-import { validate as validateUUID } from 'uuid'
+import { validate as validateUUID, v4 as uuidv4 } from 'uuid'
 import multer from 'multer'
 import { extname, join } from 'path'
 import { pool } from '../db.js'
@@ -37,7 +37,7 @@ export const uploadAndValidateCombinedProperty = multer({
     filename: (req, file, cb) => {
       const fileExtension = extname(file.originalname)
       const fileName = file.originalname.split(fileExtension)[0]
-      cb(null, `${fileName}-${Date.now()}${fileExtension}`)
+      cb(null, `${fileName}-${uuidv4()}${fileExtension}`)
     },
   }),
   fileFilter: async (req, file, cb) => {

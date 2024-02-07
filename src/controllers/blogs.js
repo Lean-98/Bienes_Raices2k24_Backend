@@ -47,7 +47,6 @@ export class BlogController {
       const fileName = path.basename(req.file.path)
       // Agrega la ruta de la imagen al host del SV
       const imagePath = `http://${DB_HOST}:${PORT}/public/${fileName}`
-      // console.log(imagePath)
 
       const newBlog = await BlogModel.create({ input, imagePath })
 

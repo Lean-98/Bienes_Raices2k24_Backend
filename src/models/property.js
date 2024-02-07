@@ -55,7 +55,7 @@ export class PropertyModel {
         garage,
         created,
         vendor_id,
-        imagePaths.map(filePath => path.basename(filePath)).join(','), // Concatenar los nombres de archivo de las imágenes en una cadena separada por comas
+        imagePaths.map(imagePath => imagePath).join(','), // Concatenar las imagenes  en cadenas separada por comas
       ],
     )
 
@@ -90,33 +90,34 @@ export class PropertyModel {
     )
 
     // Convertir la cadena de nombres de archivo a un array de strings
-    const currentImagePaths =
-      currentImagesRow.length > 0 ? currentImagesRow[0].image.split(',') : []
+    if (imagePaths.length > 0) {
+      const currentImagePaths =
+        currentImagesRow.length > 0 ? currentImagesRow[0].image.split(',') : []
 
-    console.log('Current image paths to delete:', currentImagePaths)
+      console.log('Current image paths to delete:', currentImagePaths)
 
-    // Resto del código para eliminar las imágenes actuales
-    try {
-      await Promise.all(
-        currentImagePaths.map(async fileName => {
-          const imagePath = path.join(CURRENT_DIR, '../../uploads', fileName)
-          await fs.unlink(imagePath)
-          console.log('File deleted successfully:', imagePath)
-        }),
-      )
-    } catch (error) {
-      console.error('Failed to delete files:', currentImagePaths)
-      console.error('Error details:', error.message)
-      console.error('Error stack:', error.stack)
+      // Resto del código para eliminar las imágenes actuales
+      try {
+        await Promise.all(
+          currentImagePaths.map(async fileName => {
+            const imagePath = path.join(CURRENT_DIR, '../../uploads', fileName)
+            await fs.unlink(imagePath)
+            console.log('File deleted successfully:', imagePath)
+          }),
+        )
+      } catch (error) {
+        console.error('Failed to delete files:', currentImagePaths)
+        console.error('Error details:', error.message)
+        console.error('Error stack:', error.stack)
+      }
     }
-
     const [result] = await pool.query(
       'UPDATE properties SET title = IFNULL(?, title), price = IFNULL(?, price), image = IFNULL(?, image), description = IFNULL(?, description), bedrooms = IFNULL(?, bedrooms), baths = IFNULL(?, baths), garage = IFNULL(?, garage), created = IFNULL(?, created), vendor_id = IFNULL(?, vendor_id) WHERE id = UUID_TO_BIN(?)',
       [
         title,
         price,
         // Almacena solo los nombres de archivo
-        imagePaths.map(filePath => path.basename(filePath)).join(','),
+        imagePaths.map(imagePath => imagePath).join(','), // Concatenar las imagenes  en cadenas separada por comas
         description,
         bedrooms,
         baths,

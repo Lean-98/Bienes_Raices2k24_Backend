@@ -7,7 +7,7 @@ export const testimonialSchema = z.object({
     .refine(val => val.length >= 3, {
       message: 'Author must have more than 3 characters',
     }),
-  content: z.string().refine(val => val.length > 30, {
-    message: 'Content must have more than 30 characters',
+  content: z.string().refine(val => val.length > 20, {
+    message: 'Content must have more than 20 characters',
   }),
 })
